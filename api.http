@@ -1,0 +1,29 @@
+
+GET http://127.0.0.1:8000/api/usuarios
+
+
+
+
+### Requisição POST
+POST http://127.0.0.1:8000/api/usuarios
+Content-Type: application/json
+
+
+
+
+ {
+        'foto_usuario': 'C:\Users\thiag\OneDrive\Área de Trabalho\Artes Photoshop\DANCE.jpg',
+        'tipo_usuario': 'Aluno',
+        'nome': 'Thiago Spadari',
+        'email':'thiago.spadari02@gmail.com' ,
+        'data_nascimento' : '29-11-2002',
+        'cpf': '54264506840',
+        'rg': '547214509',
+        'telefone': '11960599793',
+        'cep': '09606000',
+        'logradouro': 'Rua Vinte e Tres de Maio',
+        'numero' : '776',
+        'complemento': 'Casa',
+        'password' : 'titi9632',
+
+}
