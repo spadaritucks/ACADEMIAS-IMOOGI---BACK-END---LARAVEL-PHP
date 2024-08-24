@@ -59,8 +59,9 @@ class UsuarioController extends Controller
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'status' => false,
-                'message' => 'Erro ao recuperar lista de usuários: ' . $e->getMessage(),
+                'error' => 'An unexpected error occurred.',
+                'message' => env('APP_DEBUG') ? $e->getMessage() : 'Something went wrong.',
+                'trace' => env('APP_DEBUG') ? $e->getTraceAsString() : null,
             ], 500);
         }
     }
