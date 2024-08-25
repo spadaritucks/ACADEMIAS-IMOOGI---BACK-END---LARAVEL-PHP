@@ -39,7 +39,7 @@ Route::get('/unidades', [UnidadesController::class, 'index']);
 Route::get('/unidades/{id}', [UnidadesController::class, 'show']);
 Route::post('/unidades', [UnidadesController::class, 'store']);
 Route::put('/unidades/{id}', [UnidadesController::class, 'update']);
-Route::get('/unidades/{id}', [UnidadesController::class, 'destroy']);
+Route::delete('/unidades/{id}', [UnidadesController::class, 'destroy']);
 
 //Rota de Autenticação
 Route::post('/login', [LoginController::class, 'login']);
