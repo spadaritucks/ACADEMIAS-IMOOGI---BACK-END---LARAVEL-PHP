@@ -296,26 +296,7 @@ class UsuarioController extends Controller
                     'observacoes' => $request->observacoes
                 ]);
 
-                // Atualizar e adicionar modalidades
-                $existingModalidades = UsuarioModalidades::where('usuario_id', $usuario->id)->pluck('modalidade_id')->toArray();
-                $newModalidades = is_array($request->modalidade_id) ? $request->modalidade_id : [$request->modalidade_id];
-
-                // Remover modalidades que não estão mais selecionadas
-                foreach ($existingModalidades as $existingModalidade) {
-                    if (!in_array($existingModalidade, $newModalidades)) {
-                        UsuarioModalidades::where('usuario_id', $usuario->id)
-                            ->where('modalidade_id', $existingModalidade)
-                            ->delete();
-                    }
-                }
-
-                // Adicionar ou atualizar as modalidades selecionadas
-                foreach ($newModalidades as $modalidadeId) {
-                    UsuarioModalidades::updateOrCreate(
-                        ['usuario_id' => $usuario->id, 'modalidade_id' => $modalidadeId],
-                        ['modalidade_id' => $modalidadeId]
-                    );
-                }
+              
             } else if ($request->tipo_usuario == 'funcionario') {
 
                 $dados = DadosFuncionario::where('usuario_id', $usuario->id)->first();
