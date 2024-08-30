@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 
@@ -10,6 +11,7 @@ Route::get('/', function () {
 });
 
 
-
-
+Route::get('/storage', function () {
+   return Artisan::call('storage:link');
+});
 

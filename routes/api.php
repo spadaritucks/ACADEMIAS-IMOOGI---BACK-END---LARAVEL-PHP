@@ -4,6 +4,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ModalidadesController;
 use App\Http\Controllers\PlanosController;
 use App\Http\Controllers\UnidadesController;
+use App\Http\Controllers\UserModalidadeEditController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +18,10 @@ Route::get('/usuarios', [UsuarioController::class, 'index']);
 Route::get('/usuarios/{id}', [UsuarioController::class, 'show']);
 Route::post('/usuarios', [UsuarioController::class, 'store']);
 Route::put('/usuarios/{id}', [UsuarioController::class, 'update']);
+Route::put('/user_modalidade/{id}',[UserModalidadeEditController::class, 'update']);
 Route::delete('/usuarios/{id}', [UsuarioController::class, 'destroy']);
+
+
 
 
 //Roteamento dos Planos

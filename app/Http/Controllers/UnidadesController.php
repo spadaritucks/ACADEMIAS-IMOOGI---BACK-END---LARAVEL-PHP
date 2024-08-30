@@ -179,6 +179,7 @@ class UnidadesController extends Controller
             ],400);
             }
     }
+    
 
     public function destroy ($id){
         try{
