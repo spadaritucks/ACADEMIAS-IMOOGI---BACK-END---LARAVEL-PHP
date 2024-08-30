@@ -37,8 +37,12 @@ class UserModalidadeEditController extends Controller
                 UsuarioModalidades::updateOrCreate(
                     ['usuario_id' => $usuario->id, 'modalidade_id' => $modalidadeId],
                     ['modalidade_id' => $modalidadeId]
+                    
                 );
             }
+
+            DB::commit();
+
 
             return response()->json([
                 'status' => true,
@@ -46,7 +50,7 @@ class UserModalidadeEditController extends Controller
             ]);
 
 
-            DB::commit();
+          
         } catch (Exception $e) {
 
             return response()->json([
