@@ -150,10 +150,22 @@ class UsuarioController extends Controller
                 $fotoUsuario = $filePath;
             }
 
+            $data = [
+                'tipo_usuario' => $request->tipo_usuario,
+                'nome' => $request->nome,
+                'email' => $request->email,
+                'data_nascimento' => $request->data_nascimento,
+                'cpf' => $request->cpf,
+                'rg' => $request->rg,
+                'telefone' => $request->telefone,
+                'cep' => $request->cep,
+                'logradouro' => $request->logradouro,
+                'numero' => $request->numero,
+                'complemento' => $request->complemento,
+                'password' => Hash::make($request->password),
+            ];
 
-
-            $usuario = Usuario::create([
-
+            $data2 = [
                 'foto_usuario' => $fotoUsuario,
                 'tipo_usuario' => $request->tipo_usuario,
                 'nome' => $request->nome,
@@ -167,7 +179,11 @@ class UsuarioController extends Controller
                 'numero' => $request->numero,
                 'complemento' => $request->complemento,
                 'password' => Hash::make($request->password),
-            ]);
+            ];
+
+            $foto_usuario == null? $usuario = Usuario::create([$data]) : $usuario = Usuario::create([$data2]);
+
+
 
             if ($request->tipo_usuario == 'aluno') {
 
