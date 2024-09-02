@@ -181,7 +181,7 @@ class UsuarioController extends Controller
                 'password' => Hash::make($request->password),
             ];
 
-            $foto_usuario == null? $usuario = Usuario::create([$data]) : $usuario = Usuario::create([$data2]);
+            $fotoUsuario == null ? $usuario = Usuario::create([$data]) : $usuario = Usuario::create([$data2]);
 
 
 
