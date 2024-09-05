@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ModalidadesController;
 use App\Http\Controllers\PlanosController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\UserModalidadeEditController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -20,6 +22,8 @@ Route::post('/usuarios', [UsuarioController::class, 'store']);
 Route::put('/usuarios/{id}', [UsuarioController::class, 'update']);
 Route::put('/user_modalidade/{id}',[UserModalidadeEditController::class, 'update']);
 Route::delete('/usuarios/{id}', [UsuarioController::class, 'destroy']);
+
+Route::get('/image/{filename}', [ImageController::class, 'getUserImage']);
 
 
 
