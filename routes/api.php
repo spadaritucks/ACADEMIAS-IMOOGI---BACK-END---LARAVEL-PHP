@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AulasController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ModalidadesController;
 use App\Http\Controllers\PlanosController;
+use App\Http\Controllers\ReservasController;
 use App\Http\Controllers\UnidadesController;
 use App\Http\Controllers\UserModalidadeEditController;
 use App\Http\Controllers\UsuarioController;
@@ -23,7 +25,10 @@ Route::put('/usuarios/{id}', [UsuarioController::class, 'update']);
 Route::put('/user_modalidade/{id}',[UserModalidadeEditController::class, 'update']);
 Route::delete('/usuarios/{id}', [UsuarioController::class, 'destroy']);
 
+
 Route::get('/image/{filename}', [ImageController::class, 'getUserImage']);
+
+
 
 
 
@@ -51,5 +56,20 @@ Route::delete('/unidades/{id}', [UnidadesController::class, 'destroy']);
 
 //Rota de Autenticação
 Route::post('/login', [LoginController::class, 'login']);
+
+
+//Rotas de Reservas de Aula
+Route::get('/reservas', [ReservasController::class, 'index']);
+Route::post('/reservas', [ReservasController::class, 'store']);
+Route::delete('/reservas/{id}', [ReservasController::class, 'destroy']);
+
+//Rotas de Gerenciamento de Aulas
+
+Route::get('/aulas', [AulasController::class, 'index']);
+Route::post('/aulas', [AulasController::class, 'store']);
+Route::put('/aulas/{id}', [AulasController::class, 'update']);
+Route::delete('/aulas/{id}', [AulasController::class, 'destroy']);
+
+
 
 

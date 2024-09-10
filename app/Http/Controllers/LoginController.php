@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function login(Request $request){
+        
 
         if(Auth::attempt(['cpf' =>$request->cpf, 'password' => $request->password])){
             $user = Auth::user();
