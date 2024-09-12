@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('aulas', function (Blueprint $table) {
-            $table->dropColumn('data');
+        Schema::create('checkins', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('usuario_id')->constrained()->onDelete('cascade');
+            $table->timestamp('checkin_at'); // Data e hora do check-in
+            $table->timestamps();
         });
-
-        Schema::table('reservas', function (Blueprint $table) {
-            $table->dropColumn('data');
-        });
+        
     }
 
     /**
@@ -25,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('reservas', function (Blueprint $table) {
-            //
-        });
+        //
     }
 };

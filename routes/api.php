@@ -23,7 +23,10 @@ Route::get('/usuarios/{id}', [UsuarioController::class, 'show']);
 Route::post('/usuarios', [UsuarioController::class, 'store']);
 Route::put('/usuarios/{id}', [UsuarioController::class, 'update']);
 Route::put('/user_modalidade/{id}',[UserModalidadeEditController::class, 'update']);
+Route::put('/usuario_client/{id}', [UsuarioController::class, 'updateClientUser']);
+route::put('/user_password/{id}',[UsuarioController::class, 'resetPassword']);
 Route::delete('/usuarios/{id}', [UsuarioController::class, 'destroy']);
+
 
 
 Route::get('/image/{filename}', [ImageController::class, 'getUserImage']);
@@ -56,6 +59,7 @@ Route::delete('/unidades/{id}', [UnidadesController::class, 'destroy']);
 
 //Rota de Autenticação
 Route::post('/login', [LoginController::class, 'login']);
+
 
 
 //Rotas de Reservas de Aula

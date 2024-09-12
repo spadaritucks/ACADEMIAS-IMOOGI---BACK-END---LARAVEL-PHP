@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Checkins;
 use App\Models\Reservas;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 
 class ReservasController extends Controller
 {
@@ -39,24 +42,41 @@ class ReservasController extends Controller
 
     {
       try{
-        DB::beginTransaction();
+        $usuarioId = $request->input('usuario_id');
+
+        // 1. Verificar se o usuário já fez 2 check-ins nesta semana
+        $checkinsNaSemana = Checkins::where('usuario_id', $usuarioId)
+        ->whereBetween('checkin_at', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek()
+        ])
+        ->count();
 
 
+        if ($checkinsNaSemana >= 2) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Você já atingiu o limite de 2 check-ins nesta semana.'
+            ], 403);
+        }
+
+        // 2. Criar a reserva
         $reserva = Reservas::create([
-            'usuario_id' => $request->usuario_id,
-            'modalidade_id' => $request->modalidade_id,
-            'dia_semana' => $request->dia_semana,
-            'horario' => $request->horario,
+            'usuario_id' => $request->input('usuario_id'),
+            'modalidade_id' => $request->input('modalidade_id'),
+            'dia_semana' => $request->input('dia_semana'),
+            'horario' => $request->input('horario'),
         ]);
 
-
-        DB::commit();
+        Checkins::create([
+            'usuario_id' => $usuarioId,
+            'checkin_at' => Carbon::now()
+        ]);
 
         return response()->json([
-            'status' => true,
-            'aulas' => $reserva,
-            'message' => 'Reserva feita com sucesso'
-        ],201);
+            'message' => 'Reserva criada com sucesso!',
+            'reserva' => $reserva
+        ]);
 
       }catch(Exception $e){
 

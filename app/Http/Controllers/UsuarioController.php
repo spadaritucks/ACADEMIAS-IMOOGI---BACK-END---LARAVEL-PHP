@@ -35,7 +35,7 @@ class UsuarioController extends Controller
 
             // Buscar nomes das modalidades
             $modalidadeNomes = DB::table('modalidades')->pluck('nome_modalidade', 'id');
-    
+
             // Adicionar o nome da modalidade ao array de modalidades
             foreach ($modalidades as &$modalidade) {
                 $modalidade->nome_modalidade = $modalidadeNomes[$modalidade->modalidade_id] ?? 'Desconhecida';
@@ -72,19 +72,19 @@ class UsuarioController extends Controller
         try {
             // Buscar os dados do usuário
             $user = DB::table('usuarios')->where('id', $id)->first();
-    
+
             if (!$user) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Usuário não encontrado',
                 ], 404);
             }
-    
+
             // Inicializar os arrays para contratos, modalidades e funcionários
             $contratos = [];
             $modalidades = [];
             $funcionarios = [];
-    
+
             if ($user->tipo_usuario == 'aluno') {
                 // Buscar contratos com detalhes dos planos
                 $contratos = DB::table('contratos')
@@ -92,15 +92,15 @@ class UsuarioController extends Controller
                     ->where('contratos.usuario_id', $id)
                     ->select('contratos.*', 'planos.nome_plano')
                     ->get();
-    
+
                 // Buscar modalidades do usuário
                 $modalidades = DB::table('usuarios_modalidades')
                     ->where('usuario_id', $id)
                     ->get();
-    
+
                 // Buscar nomes das modalidades
                 $modalidadeNomes = DB::table('modalidades')->pluck('nome_modalidade', 'id');
-    
+
                 // Adicionar o nome da modalidade ao array de modalidades
                 foreach ($modalidades as &$modalidade) {
                     $modalidade->nome_modalidade = $modalidadeNomes[$modalidade->modalidade_id] ?? 'Desconhecida';
@@ -111,7 +111,7 @@ class UsuarioController extends Controller
                     ->where('usuario_id', $id)
                     ->get();
             }
-    
+
             // Montar o resultado final
             $userData = [
                 'usuario' => $user,
@@ -119,7 +119,7 @@ class UsuarioController extends Controller
                 'modalidades' => $modalidades,
                 'funcionarios' => $funcionarios
             ];
-    
+
             return response()->json([
                 'status' => true,
                 'userData' => $userData
@@ -150,14 +150,10 @@ class UsuarioController extends Controller
                 $fotoUsuario = $filePath;
             }
 
-            $data = [
+            $data = [];
 
-            ];
+            $data2 = [];
 
-            $data2 = [
-
-            ];
-            
 
 
             $usuario = Usuario::create([
@@ -303,8 +299,6 @@ class UsuarioController extends Controller
                     'parcelas' => $request->parcelas,
                     'observacoes' => $request->observacoes
                 ]);
-
-              
             } else if ($request->tipo_usuario == 'funcionario') {
 
                 $dados = DadosFuncionario::where('usuario_id', $usuario->id)->first();
@@ -328,6 +322,102 @@ class UsuarioController extends Controller
                 'message' => 'Usuário atualizado com sucesso!'
             ], 200);
         } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => 'Usuário não editado! ' . $e->getMessage()
+            ], 400);
+        }
+    }
+
+    public function resetPassword(UsuarioRequest $request, $id)
+    {
+        try {
+
+         DB::beginTransaction();
+            $usuario = Usuario::findOrFail($id);
+
+            $usuario->update([
+                'password' => $request->password
+            ]);
+
+           
+         DB::commit();
+
+         return response()->json([
+            "status" => true,
+            "message" => "Senha alterada com sucesso!"
+         ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                "status" => false,
+                "message" => "Falha em alterar a senha! " .$e
+             ]);
+        }
+    }
+
+    //Função de edição no menu do usuario que só inclui os dados pessoais
+    public function updateClientUser(UsuarioRequest $request, $id){
+        try{
+            DB::beginTransaction();
+
+            $usuario = Usuario::findOrFail($id);
+
+            $fotoUsuario = $usuario->foto_usuario;
+            if ($request->hasFile('foto_usuario')) {
+                $file = $request->file('foto_usuario');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = 'uploads/' . $fileName;
+                Storage::putFileAs('public/uploads', $file, $fileName); // Salva o arquivo na pasta storage/public
+                $fotoUsuario = $filePath;
+            }
+
+
+
+
+            $data = [
+                'foto_usuario' => $fotoUsuario,
+                'tipo_usuario' => $request->tipo_usuario,
+                'nome' => $request->nome,
+                'email' => $request->email,
+                'data_nascimento' => $request->data_nascimento,
+                'cpf' => $request->cpf,
+                'rg' => $request->rg,
+                'telefone' => $request->telefone,
+                'cep' => $request->cep,
+                'logradouro' => $request->logradouro,
+                'numero' => $request->numero,
+                'complemento' => $request->complemento,
+            ];
+
+            $data2 = [
+                'tipo_usuario' => $request->tipo_usuario,
+                'nome' => $request->nome,
+                'email' => $request->email,
+                'data_nascimento' => $request->data_nascimento,
+                'cpf' => $request->cpf,
+                'rg' => $request->rg,
+                'telefone' => $request->telefone,
+                'cep' => $request->cep,
+                'logradouro' => $request->logradouro,
+                'numero' => $request->numero,
+                'complemento' => $request->complemento,
+            ];
+
+
+
+            $fotoUsuario != null ?   $usuario->update($data) : $usuario->update($data2);
+
+
+            return response()->json([
+                'status' => true,
+                'user' => $usuario,
+                'message' => 'Usuário atualizado com sucesso!'
+            ], 200);
+
+            DB::commit();
+        }catch(Exception $e){
             DB::rollBack();
             return response()->json([
                 'status' => false,
