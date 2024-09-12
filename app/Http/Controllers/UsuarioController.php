@@ -358,7 +358,7 @@ class UsuarioController extends Controller
     }
 
     //Função de edição no menu do usuario que só inclui os dados pessoais
-    public function updateClientUser(UsuarioRequest $request, $id){
+    public function updateClientUser(Request $request, $id){
         try{
             DB::beginTransaction();
 
@@ -378,7 +378,6 @@ class UsuarioController extends Controller
 
             $data = [
                 'foto_usuario' => $fotoUsuario,
-                'tipo_usuario' => $request->tipo_usuario,
                 'nome' => $request->nome,
                 'email' => $request->email,
                 'data_nascimento' => $request->data_nascimento,
@@ -392,7 +391,6 @@ class UsuarioController extends Controller
             ];
 
             $data2 = [
-                'tipo_usuario' => $request->tipo_usuario,
                 'nome' => $request->nome,
                 'email' => $request->email,
                 'data_nascimento' => $request->data_nascimento,
@@ -408,7 +406,7 @@ class UsuarioController extends Controller
 
 
             $fotoUsuario != null ?   $usuario->update($data) : $usuario->update($data2);
-
+            DB::commit();
 
             return response()->json([
                 'status' => true,
@@ -416,7 +414,7 @@ class UsuarioController extends Controller
                 'message' => 'Usuário atualizado com sucesso!'
             ], 200);
 
-            DB::commit();
+            
         }catch(Exception $e){
             DB::rollBack();
             return response()->json([
