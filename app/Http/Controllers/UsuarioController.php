@@ -330,7 +330,7 @@ class UsuarioController extends Controller
         }
     }
 
-    public function resetPassword(UsuarioRequest $request, $id)
+    public function resetPassword(Request $request, $id)
     {
         try {
 
