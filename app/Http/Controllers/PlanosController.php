@@ -58,7 +58,8 @@ class PlanosController extends Controller
                 'valor_mensal'=> $request->valor_mensal,
                 'valor_total'=> $request->valor_total,
                 'num_modalidades'=> $request->num_modalidades,
-                'status' => $request->status
+                'status' => $request->status,
+                'number_checkins' => $request->number_checkins
             ]);
     
 
@@ -95,7 +96,8 @@ class PlanosController extends Controller
                 'valor_mensal'=> $request->valor_mensal,
                 'valor_total'=> $request->valor_total,
                 'num_modalidades'=> $request->num_modalidades,
-                'status' => $request->status
+                'status' => $request->status,
+                'number_checkins' => $request->number_checkins
             ]);
     
 

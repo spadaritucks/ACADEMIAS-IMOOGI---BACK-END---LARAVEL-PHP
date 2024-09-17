@@ -13,6 +13,7 @@ class Contratos extends Model
     protected $fillable = [
         'usuario_id',
         'planos_id',
+        'packs_id',
         'data_inicio',
         'data_renovacao',
         'data_vencimento',

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Planos extends Model
+class Packs extends Model
 {
     use HasFactory;
 
@@ -17,6 +17,6 @@ class Planos extends Model
         'valor_total',
         'num_modalidades',
         'status',
-        'number_checkins'
+        'number_checkins_especial'
     ];
 }

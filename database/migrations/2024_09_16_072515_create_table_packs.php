@@ -6,13 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /*
+    /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('planos', function(Blueprint $table){
-            $table->id();
+        Schema::create('table_packs', function (Blueprint $table) {
             $table->string('nome_plano');
             $table->integer('duracao');
             $table->decimal('valor_matricula',8,2);
@@ -20,6 +19,7 @@ return new class extends Migration
             $table->decimal('valor_total',8,2);
             $table->integer('num_modalidades');
             $table->string('status');
+            $table->integer('number_checkins_especial');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('planos');
+        Schema::dropIfExists('table_packs');
     }
 };

@@ -19,6 +19,7 @@ class ResetDailyReservations extends Command
 
     public function handle()
     {
+
         // Reseta as reservas do dia
         Reservas::whereDate('created_at', Carbon::today())->delete();
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\AulasController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ModalidadesController;
+use App\Http\Controllers\PacksController;
 use App\Http\Controllers\PlanosController;
 use App\Http\Controllers\ReservasController;
 use App\Http\Controllers\UnidadesController;
@@ -34,14 +35,16 @@ Route::get('/image/{filename}', [ImageController::class, 'getUserImage']);
 
 
 
-
-
 //Roteamento dos Planos
 Route::get('/planos', [PlanosController::class, 'index']);
 Route::get('/planos/{id}', [PlanosController::class, 'show']);
 Route::post('/planos', [PlanosController::class, 'store']);
 Route::put('/planos/{id}', [PlanosController::class, 'update']);
 Route::delete('/planos/{id}', [PlanosController::class, 'destroy']);
+
+Route::get('/packs', [PacksController::class, 'index']);
+Route::post('/packs', [PacksController::class, 'store']);
+Route::delete('/packs/{id}', [PacksController::class, 'destroy']);
 
 //Roteamento das Modalidades
 Route::get('/modalidades', [ModalidadesController::class, 'index']);

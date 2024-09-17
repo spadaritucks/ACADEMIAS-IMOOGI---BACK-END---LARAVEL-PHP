@@ -38,7 +38,8 @@ class PlanosRequest extends FormRequest
             'valor_mensal'=> 'required' ,
             'valor_total'=> 'required',
             'num_modalidades'=> 'required',
-            'status'=> 'required|string'
+            'status'=> 'required|string',
+            'number_checkins' => 'required|integer'
         ];
     }
 
@@ -49,8 +50,10 @@ class PlanosRequest extends FormRequest
             'valor_matricula.required' => 'Campo do valor da matricula do plano é obrigatorio',
             'valor_mensal.required' => 'Campo do valor mensal do plano é obrigatorio',
             'valor_total.required' => 'Campo do valor total do plano é obrigatorio',
-            'num_modalidades.requires' => 'Campo de quantidade de modalidades é obrigatorio',
+            'num_modalidades.required' => 'Campo de quantidade de modalidades é obrigatorio',
             'status.required' => 'Campo status é obrigatorio',
+            'number_checkins.required' => 'Campo de Numero de Checkins é obrigatorio',
+            'number_checkins.integer' => 'Valor Invalido'
         ];
     }
     

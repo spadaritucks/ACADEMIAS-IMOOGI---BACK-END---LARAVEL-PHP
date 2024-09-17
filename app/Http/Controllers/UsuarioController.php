@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClientUsuariosRequest;
 use App\Http\Requests\UsuarioRequest;
 use App\Http\Requests\UsuarioUpdateRequest;
 use App\Models\Contratos;
 use App\Models\DadosFuncionario;
+use App\Models\Planos;
 use App\Models\Usuario;
 use App\Models\UsuarioModalidades;
 use Carbon\Carbon;
@@ -157,7 +159,6 @@ class UsuarioController extends Controller
 
 
             $usuario = Usuario::create([
-
                 'foto_usuario' => $fotoUsuario,
                 'tipo_usuario' => $request->tipo_usuario,
                 'nome' => $request->nome,
@@ -175,9 +176,10 @@ class UsuarioController extends Controller
 
             if ($request->tipo_usuario == 'aluno') {
 
-                Contratos::create([
+               $contrato =  Contratos::create([
                     'usuario_id' => $usuario->id,
                     'planos_id' => $request->planos_id,
+                    'packs_id' => $request->packs_id ?? null,
                     'data_inicio' => $request->data_inicio,
                     'data_renovacao' => $request->data_renovacao,
                     'data_vencimento' =>  $request->data_vencimento,
@@ -216,6 +218,7 @@ class UsuarioController extends Controller
             return response()->json([
                 'status' => true,
                 'user' => $usuario,
+                'contrato' => $contrato,
                 'message' => 'Usuario cadastrado com Sucesso!'
 
             ], 201);
@@ -280,7 +283,7 @@ class UsuarioController extends Controller
 
 
 
-            $fotoUsuario != null ?   $usuario->update($data) : $usuario->update($data2);
+            $fotoUsuario != null ? $usuario->update($data) : $usuario->update($data2);
 
             $dados = null;
             $dados_modalidades = null;
@@ -288,9 +291,10 @@ class UsuarioController extends Controller
             if ($request->tipo_usuario == 'aluno') {
 
                 $contrato = Contratos::where('usuario_id', $usuario->id)->first();
-
+                
                 $contrato->update([
                     'planos_id' => $request->planos_id,
+                    'packs_id' => $request->packs_id ?? null,
                     'data_inicio' => $request->data_inicio,
                     'data_renovacao' => $request->data_renovacao,
                     'data_vencimento' => $request->data_vencimento,
@@ -299,6 +303,8 @@ class UsuarioController extends Controller
                     'parcelas' => $request->parcelas,
                     'observacoes' => $request->observacoes
                 ]);
+
+
             } else if ($request->tipo_usuario == 'funcionario') {
 
                 $dados = DadosFuncionario::where('usuario_id', $usuario->id)->first();
@@ -358,7 +364,8 @@ class UsuarioController extends Controller
     }
 
     //Função de edição no menu do usuario que só inclui os dados pessoais
-    public function updateClientUser(Request $request, $id){
+    public function updateClientUser(ClientUsuariosRequest $request, $id){
+
         try{
             DB::beginTransaction();
 
