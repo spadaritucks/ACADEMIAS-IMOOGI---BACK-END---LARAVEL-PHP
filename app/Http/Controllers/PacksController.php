@@ -48,6 +48,27 @@ class PacksController extends Controller
        }
     }
 
+    public function update(Request $request, $id)
+    {
+        try{
+            DB::beginTransaction();
+            $pack = Packs::findOrFail($id);
+            $pack->update($request->all());
+            DB::commit();
+            return response()->json([
+                'message' => 'Pacote atualizado com sucesso!',
+                'pack' => $pack
+            ]);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => 'Falha ao atualizar o pacote! ' . $e->getMessage()
+            ], 400);    
+        }
+    }   
+
+
     public function destroy($id)
     {
        try{

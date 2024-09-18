@@ -44,6 +44,7 @@ Route::delete('/planos/{id}', [PlanosController::class, 'destroy']);
 
 Route::get('/packs', [PacksController::class, 'index']);
 Route::post('/packs', [PacksController::class, 'store']);
+Route::put('/packs/{id}', [PacksController::class, 'update']);
 Route::delete('/packs/{id}', [PacksController::class, 'destroy']);
 
 //Roteamento das Modalidades
