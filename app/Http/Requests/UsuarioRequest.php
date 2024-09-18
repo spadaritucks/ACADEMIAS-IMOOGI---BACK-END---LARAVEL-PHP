@@ -48,15 +48,15 @@ class UsuarioRequest extends FormRequest
             'complemento' => 'nullable|string',
             'password' => 'nullable|string|min:6',
 
-            'planos_id' => 'required',
-            'modalidade_id' => 'required',
-            'data_inicio' => 'required|date',
-            'data_renovacao' => 'required|date',
-            'data_vencimento' => 'required|date',
-            'valor_plano' => 'required',
-            'desconto' => 'required',
-            'parcelas' => 'required',
-            'observacoes' => 'required|string',
+            // 'planos_id' => 'required',
+            // 'modalidade_id' => 'required',
+            // 'data_inicio' => 'required|date',
+            // 'data_renovacao' => 'required|date',
+            // 'data_vencimento' => 'required|date',
+            // 'valor_plano' => 'required',
+            // 'desconto' => 'required',
+            // 'parcelas' => 'required',
+            // 'observacoes' => 'required|string',
 
            
 
