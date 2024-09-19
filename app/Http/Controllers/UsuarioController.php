@@ -135,13 +135,9 @@ class UsuarioController extends Controller
     }
 
     public function store(UsuarioRequest $request): JsonResponse
-
     {
-
         try {
-
             DB::beginTransaction();
-
 
             $fotoUsuario = null;
             if ($request->hasFile('foto_usuario')) {
@@ -151,12 +147,6 @@ class UsuarioController extends Controller
                 Storage::putFileAs('public/uploads', $file, $fileName); // Salva o arquivo na pasta storage/public
                 $fotoUsuario = $filePath;
             }
-
-            $data = [];
-
-            $data2 = [];
-
-
 
             $usuario = Usuario::create([
                 'foto_usuario' => $fotoUsuario,
@@ -174,15 +164,17 @@ class UsuarioController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
-            if ($request->tipo_usuario == 'aluno') {
+            $contrato = null;
+            $dados = null;
 
-               $contrato =  Contratos::create([
+            if ($request->tipo_usuario == 'aluno') {
+                $contrato = Contratos::create([
                     'usuario_id' => $usuario->id,
                     'planos_id' => $request->planos_id,
                     'packs_id' => $request->packs_id ?? null,
                     'data_inicio' => $request->data_inicio,
                     'data_renovacao' => $request->data_renovacao,
-                    'data_vencimento' =>  $request->data_vencimento,
+                    'data_vencimento' => $request->data_vencimento,
                     'valor_plano' => $request->valor_plano,
                     'desconto' => $request->desconto,
                     'parcelas' => $request->parcelas,
@@ -190,7 +182,6 @@ class UsuarioController extends Controller
                 ]);
 
                 if (is_array($request->modalidade_id)) {
-
                     foreach ($request->modalidade_id as $modalidadeId) {
                         UsuarioModalidades::create([
                             'usuario_id' => $usuario->id,
@@ -203,7 +194,7 @@ class UsuarioController extends Controller
                         'modalidade_id' => $request->modalidade_id
                     ]);
                 }
-            } else if ($request->tipo_usuario == 'funcionario') {
+            } elseif ($request->tipo_usuario == 'funcionario') {
                 $dados = DadosFuncionario::create([
                     'usuario_id' => $usuario->id,
                     'tipo_funcionario' => $request->tipo_funcionario,
@@ -214,25 +205,22 @@ class UsuarioController extends Controller
 
             DB::commit();
 
-
             return response()->json([
                 'status' => true,
                 'user' => $usuario,
-                'contrato' => $contrato,
-                'message' => 'Usuario cadastrado com Sucesso!'
-
+                'contrato' => $contrato ?? null,
+                'dados' => $dados ?? null,
+                'message' => 'Usuário cadastrado com sucesso!'
             ], 201);
         } catch (Exception $e) {
-
             DB::rollBack();
-
             return response()->json([
                 'status' => false,
-                'message' => 'Usuario não cadastrado!' . $e->getMessage(),
-
+                'message' => 'Usuário não cadastrado! ' . $e->getMessage(),
             ], 400);
         }
     }
+
     public function update(UsuarioUpdateRequest $request, $id): JsonResponse
     {
         try {
@@ -249,9 +237,6 @@ class UsuarioController extends Controller
                 $fotoUsuario = $filePath;
             }
 
-
-
-
             $data = [
                 'foto_usuario' => $fotoUsuario,
                 'tipo_usuario' => $request->tipo_usuario,
@@ -267,55 +252,37 @@ class UsuarioController extends Controller
                 'complemento' => $request->complemento,
             ];
 
-            $data2 = [
-                'tipo_usuario' => $request->tipo_usuario,
-                'nome' => $request->nome,
-                'email' => $request->email,
-                'data_nascimento' => $request->data_nascimento,
-                'cpf' => $request->cpf,
-                'rg' => $request->rg,
-                'telefone' => $request->telefone,
-                'cep' => $request->cep,
-                'logradouro' => $request->logradouro,
-                'numero' => $request->numero,
-                'complemento' => $request->complemento,
-            ];
+            $usuario->update($data);
 
-
-
-            $fotoUsuario != null ? $usuario->update($data) : $usuario->update($data2);
-
+            $contrato = null;
             $dados = null;
             $dados_modalidades = null;
 
             if ($request->tipo_usuario == 'aluno') {
-
                 $contrato = Contratos::where('usuario_id', $usuario->id)->first();
-                
-                $contrato->update([
-                    'planos_id' => $request->planos_id,
-                    'packs_id' => $request->packs_id ?? null,
-                    'data_inicio' => $request->data_inicio,
-                    'data_renovacao' => $request->data_renovacao,
-                    'data_vencimento' => $request->data_vencimento,
-                    'valor_plano' => $request->valor_plano,
-                    'desconto' => $request->desconto,
-                    'parcelas' => $request->parcelas,
-                    'observacoes' => $request->observacoes
-                ]);
-
-
-            } else if ($request->tipo_usuario == 'funcionario') {
-
+                if ($contrato) {
+                    $contrato->update([
+                        'planos_id' => $request->planos_id,
+                        'packs_id' => $request->packs_id ?? null,
+                        'data_inicio' => $request->data_inicio,
+                        'data_renovacao' => $request->data_renovacao,
+                        'data_vencimento' => $request->data_vencimento,
+                        'valor_plano' => $request->valor_plano,
+                        'desconto' => $request->desconto,
+                        'parcelas' => $request->parcelas,
+                        'observacoes' => $request->observacoes
+                    ]);
+                }
+                // Aqui você pode adicionar lógica para atualizar modalidades, se necessário
+            } elseif ($request->tipo_usuario == 'funcionario') {
                 $dados = DadosFuncionario::where('usuario_id', $usuario->id)->first();
-                $dados->update(
-                    [
-                        'usuario_id' => $usuario->id,
+                if ($dados) {
+                    $dados->update([
                         'tipo_funcionario' => $request->tipo_funcionario,
                         'cargo' => $request->cargo,
                         'atividades' => $request->atividades,
-                    ]
-                );
+                    ]);
+                }
             }
 
             DB::commit();
@@ -323,6 +290,7 @@ class UsuarioController extends Controller
             return response()->json([
                 'status' => true,
                 'user' => $usuario,
+                'contrato' => $contrato,
                 'dados' => $dados,
                 'dados_modalidades' => $dados_modalidades,
                 'message' => 'Usuário atualizado com sucesso!'
@@ -339,34 +307,31 @@ class UsuarioController extends Controller
     public function resetPassword(Request $request, $id)
     {
         try {
-
-         DB::beginTransaction();
+            DB::beginTransaction();
             $usuario = Usuario::findOrFail($id);
 
             $usuario->update([
                 'password' => $request->password
             ]);
 
-           
-         DB::commit();
-
-         return response()->json([
-            "status" => true,
-            "message" => "Senha alterada com sucesso!"
-         ]);
-        } catch (Exception $e) {
+            DB::commit();
 
             return response()->json([
+                "status" => true,
+                "message" => "Senha alterada com sucesso!"
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
                 "status" => false,
-                "message" => "Falha em alterar a senha! " .$e
-             ]);
+                "message" => "Falha em alterar a senha! " . $e
+            ]);
         }
     }
 
     //Função de edição no menu do usuario que só inclui os dados pessoais
-    public function updateClientUser(ClientUsuariosRequest $request, $id){
-
-        try{
+    public function updateClientUser(ClientUsuariosRequest $request, $id)
+    {
+        try {
             DB::beginTransaction();
 
             $usuario = Usuario::findOrFail($id);
@@ -379,9 +344,6 @@ class UsuarioController extends Controller
                 Storage::putFileAs('public/uploads', $file, $fileName); // Salva o arquivo na pasta storage/public
                 $fotoUsuario = $filePath;
             }
-
-
-
 
             $data = [
                 'foto_usuario' => $fotoUsuario,
@@ -410,9 +372,7 @@ class UsuarioController extends Controller
                 'complemento' => $request->complemento,
             ];
 
-
-
-            $fotoUsuario != null ?   $usuario->update($data) : $usuario->update($data2);
+            $fotoUsuario != null ? $usuario->update($data) : $usuario->update($data2);
             DB::commit();
 
             return response()->json([
@@ -420,9 +380,7 @@ class UsuarioController extends Controller
                 'user' => $usuario,
                 'message' => 'Usuário atualizado com sucesso!'
             ], 200);
-
-            
-        }catch(Exception $e){
+        } catch (Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => false,
@@ -430,8 +388,6 @@ class UsuarioController extends Controller
             ], 400);
         }
     }
-
-
 
     public function destroy($id): JsonResponse
     {
@@ -444,7 +400,7 @@ class UsuarioController extends Controller
             if ($usuario->tipo_usuario == 'aluno') {
                 Contratos::where('usuario_id', $usuario->id)->delete();
                 UsuarioModalidades::where('usuario_id', $usuario->id)->delete();
-            } else if ($usuario->tipo_usuario == 'funcionario') {
+            } elseif ($usuario->tipo_usuario == 'funcionario') {
                 DadosFuncionario::where('usuario_id', $usuario->id)->delete();
             }
 
