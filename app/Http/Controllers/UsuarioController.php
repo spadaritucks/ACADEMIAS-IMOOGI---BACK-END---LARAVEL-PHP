@@ -148,14 +148,6 @@ class UsuarioController extends Controller
                 $fotoUsuario = $filePath;
             }
 
-            $comprovante = null;
-            if ($request->hasFile('comprovante')) {
-                $file = $request->file('comprovante');
-                $fileName = time() . '_' . $file->getClientOriginalName();
-                $filePath = 'uploads/' . $fileName;
-                Storage::putFileAs('public/uploads', $file, $fileName); // Salva o arquivo na pasta storage/public
-                $comprovante = $filePath;
-            }
 
             $usuario = Usuario::create([
                 'foto_usuario' => $fotoUsuario,
@@ -184,7 +176,7 @@ class UsuarioController extends Controller
                     'data_inicio' => $request->data_inicio,
                     'data_renovacao' => $request->data_renovacao,
                     'data_vencimento' => $request->data_vencimento,
-                    'comprovante' => $comprovante ?? null,
+                   
                     'valor_plano' => $request->valor_plano,
                     'desconto' => $request->desconto,
                     'parcelas' => $request->parcelas,
@@ -277,7 +269,6 @@ class UsuarioController extends Controller
                         'data_inicio' => $request->data_inicio,
                         'data_renovacao' => $request->data_renovacao,
                         'data_vencimento' => $request->data_vencimento,
-                        'comprovante' => $comprovante ?? null,
                         'valor_plano' => $request->valor_plano,
                         'desconto' => $request->desconto,
                         'parcelas' => $request->parcelas,
