@@ -5,6 +5,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ModalidadesController;
 use App\Http\Controllers\PacksController;
+use App\Http\Controllers\PagamentosMensaisController;
 use App\Http\Controllers\PlanosController;
 use App\Http\Controllers\ReservasController;
 use App\Http\Controllers\UnidadesController;
@@ -77,6 +78,13 @@ Route::get('/aulas', [AulasController::class, 'index']);
 Route::post('/aulas', [AulasController::class, 'store']);
 Route::put('/aulas/{id}', [AulasController::class, 'update']);
 Route::delete('/aulas/{id}', [AulasController::class, 'destroy']);
+
+
+//Rotas de Pagamentos Mensais
+Route::get('/pagamentos_mensais', [PagamentosMensaisController::class, 'index']);
+Route::post('/pagamentos_mensais', [PagamentosMensaisController::class, 'store']);
+Route::put('/pagamentos_mensais/{id}', [PagamentosMensaisController::class, 'adicionarComentarioAdmin']);
+
 
 
 

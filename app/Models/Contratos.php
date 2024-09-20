@@ -17,6 +17,7 @@ class Contratos extends Model
         'data_inicio',
         'data_renovacao',
         'data_vencimento',
+        'comprovante',
         'valor_plano',
         'desconto',
         'parcelas',
