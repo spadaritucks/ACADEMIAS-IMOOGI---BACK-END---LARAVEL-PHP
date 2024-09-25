@@ -14,6 +14,13 @@ class Aulas extends Model
         'modalidade_id',
         'horario',
         'dia_semana',
-        'limite_alunos'
+        'limite_alunos',
+        'data_inicio',
+        'data_fim',
+    ];
+
+    protected $casts = [
+        'data_inicio' => 'date',
+        'data_fim' => 'date',
     ];
 }
