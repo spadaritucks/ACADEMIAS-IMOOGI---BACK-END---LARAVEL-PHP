@@ -22,6 +22,7 @@ class PlanosController extends Controller
             ], 200)->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
 
         } catch (Exception $e) {
+
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao recuperar lista de planos: ' . $e->getMessage(),

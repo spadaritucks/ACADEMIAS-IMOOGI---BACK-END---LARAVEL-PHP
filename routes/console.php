@@ -12,7 +12,3 @@ Artisan::command('inspire', function () {
 
 
  
-Schedule::call(function () {
-    DB::table('reservas')->delete();
-    
-})->dailyAt('22:30');

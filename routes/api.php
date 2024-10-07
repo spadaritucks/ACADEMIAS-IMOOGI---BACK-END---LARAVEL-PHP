@@ -67,6 +67,7 @@ Route::post('/login', [LoginController::class, 'login']);
 
 
 
+
 //Rotas de Reservas de Aula
 Route::get('/reservas', [ReservasController::class, 'index']);
 Route::post('/reservas', [ReservasController::class, 'store']);

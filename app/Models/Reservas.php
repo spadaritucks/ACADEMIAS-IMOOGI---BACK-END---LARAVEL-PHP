@@ -14,6 +14,7 @@ class Reservas extends Model
         'modalidade_id',
         'horario',
         'dia_semana',
+        'data',
     ];
 
     

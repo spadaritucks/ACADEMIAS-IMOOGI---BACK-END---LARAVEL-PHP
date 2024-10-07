@@ -89,6 +89,7 @@ class ReservasController extends Controller
                         'modalidade_id' => $request->modalidade_id,
                         'dia_semana' => $request->dia_semana,
                         'horario' => $request->horario,
+                        'data' => $request->data
                     ]);
 
                     Especial_checkins::create([
@@ -114,12 +115,15 @@ class ReservasController extends Controller
           
             }
 
+            $data = Carbon::parse($request->data)->format('Y-m-d');
+
             // 2. Criar a reserva
             $reserva = Reservas::create([
                 'usuario_id' => $request->usuario_id,
                 'modalidade_id' => $request->modalidade_id,
                 'dia_semana' => $request->dia_semana,
                 'horario' => $request->horario,
+                'data' => $data
             ]);
 
             Checkins::create([

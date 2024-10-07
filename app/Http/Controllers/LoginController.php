@@ -15,10 +15,13 @@ class LoginController extends Controller
         if(Auth::attempt(['cpf' =>$request->cpf, 'password' => $request->password])){
             $user = Auth::user();
 
+            $token =  $request->user()->createToken('api-token', [], now()->addHours(1))->plainTextToken;
+
             return response()->json([
 
                 'status' => true,
                 'message' => 'Bem vindo!',
+                'token' => $token,
                 'user' => $user
             ],201);
         }else{
@@ -31,4 +34,6 @@ class LoginController extends Controller
 
 
     }
+
+ 
 }
