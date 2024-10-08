@@ -131,6 +131,8 @@ class ReservasController extends Controller
                 'checkin_at' => Carbon::now()
             ]);
 
+            
+
             return response()->json([
                 'message' => 'Reserva criada com sucesso!',
                 'reserva' => $reserva
@@ -142,6 +144,26 @@ class ReservasController extends Controller
                 'message' => 'Falha em realizar a reserva ' . $e->getMessage()
 
             ], 400);
+        }
+    }
+
+    public function getCheckins(){
+
+        try{
+
+           $checkins = Checkins::all();
+
+           return response()->json([
+             'status' => true,
+             'message' => 'Checkins coletados!',
+             'checkins' => $checkins
+           ], 200);
+
+        }catch(Exception $e){
+            return response()->json([
+                'status' => false,
+                'message' => 'Falha ao coletar os checkins!' .$e
+              ], 500);
         }
     }
 

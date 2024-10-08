@@ -73,6 +73,9 @@ Route::get('/reservas', [ReservasController::class, 'index']);
 Route::post('/reservas', [ReservasController::class, 'store']);
 Route::delete('/reservas/{id}', [ReservasController::class, 'destroy']);
 
+//Rotas de Checkins
+Route::get('/checkins', [ReservasController::class, 'getCheckins']);
+
 //Rotas de Gerenciamento de Aulas
 
 Route::get('/aulas', [AulasController::class, 'index']);
