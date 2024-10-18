@@ -261,9 +261,9 @@ class UsuarioController extends Controller
             $dados_modalidades = null;
 
             if ($request->tipo_usuario == 'aluno') {
-                $contrato = Contratos::where('usuario_id', $usuario->id)->first();
-                if ($contrato) {
-                    $contrato->update([
+                $contrato = Contratos::updateOrCreate(
+                    ['usuario_id' => $usuario->id], // Condição para encontrar o registro
+                    [ // Dados a serem atualizados ou criados
                         'planos_id' => $request->planos_id,
                         'packs_id' => $request->packs_id ?? null,
                         'data_inicio' => $request->data_inicio,
@@ -273,18 +273,17 @@ class UsuarioController extends Controller
                         'desconto' => $request->desconto,
                         'parcelas' => $request->parcelas,
                         'observacoes' => $request->observacoes
-                    ]);
-                }
-                // Aqui você pode adicionar lógica para atualizar modalidades, se necessário
+                    ]
+                );
             } elseif ($request->tipo_usuario == 'funcionario') {
-                $dados = DadosFuncionario::where('usuario_id', $usuario->id)->first();
-                if ($dados) {
-                    $dados->update([
+                $dados = DadosFuncionario::updateOrCreate(
+                    ['usuario_id' => $usuario->id], // Condição para encontrar o registro
+                    [ // Dados a serem atualizados ou criados
                         'tipo_funcionario' => $request->tipo_funcionario,
                         'cargo' => $request->cargo,
                         'atividades' => $request->atividades,
-                    ]);
-                }
+                    ]
+                );
             }
 
             DB::commit();
