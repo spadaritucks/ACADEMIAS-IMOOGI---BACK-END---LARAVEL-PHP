@@ -139,6 +139,11 @@ class UsuarioController extends Controller
         try {
             DB::beginTransaction();
 
+            // Substituir vírgula por ponto nos campos numéricos
+            $valorPlano = str_replace(',', '.', $request->valor_plano);
+            $desconto = str_replace(',', '.', $request->desconto);
+            $parcelas = str_replace(',', '.', $request->parcelas);
+
             $fotoUsuario = null;
             if ($request->hasFile('foto_usuario')) {
                 $file = $request->file('foto_usuario');
@@ -176,10 +181,9 @@ class UsuarioController extends Controller
                     'data_inicio' => $request->data_inicio,
                     'data_renovacao' => $request->data_renovacao,
                     'data_vencimento' => $request->data_vencimento,
-                   
-                    'valor_plano' => $request->valor_plano,
-                    'desconto' => $request->desconto,
-                    'parcelas' => $request->parcelas,
+                    'valor_plano' => $valorPlano, // Usar valor formatado
+                    'desconto' => $desconto, // Usar desconto formatado
+                    'parcelas' => $parcelas, // Usar parcelas formatadas
                     'observacoes' => $request->observacoes
                 ]);
 
@@ -228,6 +232,11 @@ class UsuarioController extends Controller
         try {
             DB::beginTransaction();
 
+            // Substituir vírgula por ponto nos campos numéricos
+            $valorPlano = str_replace(',', '.', $request->valor_plano);
+            $desconto = str_replace(',', '.', $request->desconto);
+            $parcelas = str_replace(',', '.', $request->parcelas);
+
             $usuario = Usuario::findOrFail($id);
 
             $fotoUsuario = $usuario->foto_usuario;
@@ -269,9 +278,9 @@ class UsuarioController extends Controller
                         'data_inicio' => $request->data_inicio,
                         'data_renovacao' => $request->data_renovacao,
                         'data_vencimento' => $request->data_vencimento,
-                        'valor_plano' => $request->valor_plano,
-                        'desconto' => $request->desconto,
-                        'parcelas' => $request->parcelas,
+                        'valor_plano' => $valorPlano, // Usar valor formatado
+                        'desconto' => $desconto, // Usar desconto formatado
+                        'parcelas' => $parcelas, // Usar parcelas formatadas
                         'observacoes' => $request->observacoes
                     ]
                 );

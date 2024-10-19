@@ -51,12 +51,17 @@ class PlanosController extends Controller
         try {
             DB::beginTransaction();
 
+            // Substituir vírgula por ponto nos campos numéricos
+            $valorMatricula = str_replace(',', '.', $request->valor_matricula);
+            $valorMensal = str_replace(',', '.', $request->valor_mensal);
+            $valorTotal = str_replace(',', '.', $request->valor_total);
+
             $plano = Planos::create([
                 'nome_plano' => $request->nome_plano,
                 'duracao'=> $request->duracao,
-                'valor_matricula'=> $request->valor_matricula,
-                'valor_mensal'=> $request->valor_mensal,
-                'valor_total'=> $request->valor_total,
+                'valor_matricula'=> $valorMatricula, // Usar valor formatado
+                'valor_mensal'=> $valorMensal, // Usar valor formatado
+                'valor_total'=> $valorTotal,
                 'num_modalidades'=> $request->num_modalidades,
                 'status' => $request->status,
                 'number_checkins' => $request->number_checkins
@@ -85,12 +90,18 @@ class PlanosController extends Controller
 
             $plano = Planos::findOrFail($id);
 
+              // Substituir vírgula por ponto nos campos numéricos
+              $valorMatricula = str_replace(',', '.', $request->valor_matricula);
+              $valorMensal = str_replace(',', '.', $request->valor_mensal);
+              $valorTotal = str_replace(',', '.', $request->valor_total);
+  
+
             $plano->update([
                 'nome_plano' => $request->nome_plano,
                 'duracao'=> $request->duracao,
-                'valor_matricula'=> $request->valor_matricula,
-                'valor_mensal'=> $request->valor_mensal,
-                'valor_total'=> $request->valor_total,
+                'valor_matricula'=> $valorMatricula,
+                'valor_mensal'=> $valorMensal,
+                'valor_total'=> $valorTotal,
                 'num_modalidades'=> $request->num_modalidades,
                 'status' => $request->status,
                 'number_checkins' => $request->number_checkins

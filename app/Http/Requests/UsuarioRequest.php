@@ -75,7 +75,6 @@ class UsuarioRequest extends FormRequest
             'nome.required' => 'Campo nome é obrigatorio!',
             'email.required' => 'Esse campo é obrigatorio!',
             'email.email' => 'Insira um email valido',
-            'email.unique' => 'E-mail já está cadastrado',
             'data_nascimento.required' => 'Campo data de nascimento é obrigatorio',
             'data_nascimento.date' => 'Insira uma data valida!',
             'cpf.required' => 'Campo CPF é obrigatorio',

@@ -37,12 +37,15 @@ class PagamentosMensaisController extends Controller
                 $comprovante = $filePath;
             }
 
+            $valorPago = str_replace(',', '.', $request->valor_pago);
+            
+
 
 
             $pagamento = Pagamentos_Mensais::create([
                 'usuario_id' => $request->usuario_id,
                 'comprovante' => $comprovante,
-                'valor_pago' => $request->valor_pago,
+                'valor_pago' => $valorPago,
                 'data_pagamento' => $request->data_pagamento,
                 'comentario' => $request->comentario,
 
