@@ -140,9 +140,9 @@ class UsuarioController extends Controller
             DB::beginTransaction();
 
             // Substituir vírgula por ponto nos campos numéricos
-            $valorPlano = str_replace(',', '.', $request->valor_plano);
-            $desconto = str_replace(',', '.', $request->desconto);
-            $parcelas = str_replace(',', '.', $request->parcelas);
+           $request->valor_plano ? $valorPlano = str_replace(',', '.', $request->valor_plano) : null;
+           $request->desconto ? $desconto = str_replace(',', '.', $request->desconto): null;
+           $request->parcelas ? $parcelas = str_replace(',', '.', $request->parcelas): null;
 
             $fotoUsuario = null;
             if ($request->hasFile('foto_usuario')) {
