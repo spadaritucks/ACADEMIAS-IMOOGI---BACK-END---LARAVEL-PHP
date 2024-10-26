@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PackRequest;
 use App\Models\Packs;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -18,7 +19,7 @@ class PacksController extends Controller
         ]);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(PackRequest $request): JsonResponse
     {
         try {
             DB::beginTransaction();
@@ -54,7 +55,7 @@ class PacksController extends Controller
         }
     }
 
-    public function update(Request $request, $id): JsonResponse
+    public function update(PackRequest $request, $id): JsonResponse
     {
         try {
             DB::beginTransaction();
@@ -78,6 +79,7 @@ class PacksController extends Controller
 
             DB::commit();
             return response()->json([
+                'status' => true,
                 'message' => 'Pacote atualizado com sucesso!',
                 'pack' => $pack
             ]);

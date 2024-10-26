@@ -227,7 +227,7 @@ class UsuarioController extends Controller
         }
     }
 
-    public function update(UsuarioUpdateRequest $request, $id): JsonResponse
+    public function update(UsuarioRequest $request, $id): JsonResponse
     {
         try {
             DB::beginTransaction();

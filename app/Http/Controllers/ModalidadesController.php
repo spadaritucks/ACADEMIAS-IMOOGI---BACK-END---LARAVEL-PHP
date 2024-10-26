@@ -88,7 +88,7 @@ class ModalidadesController extends Controller
         }
     }
 
-    public function update (ModalidadesUpdateRequest $request, $id){
+    public function update (ModalidadesRequest $request, $id){
 
         try{
 

@@ -8,9 +8,6 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UsuarioRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
@@ -21,88 +18,82 @@ class UsuarioRequest extends FormRequest
         throw new HttpResponseException(response()->json([
             'status' => false,
             'message' => $validator->errors(),
-        ], 422)); // O código de status HTTP 422 significa "Unprocessable Entity" (Entidade Não Processável). Esse código é usado quando o servidor entende a requisição do cliente, mas não pode processá-la devido a erros de validação no lado do servidor.
+        ], 422));
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
-
-
         return [
-            'foto_usuario' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
-            'tipo_usuario' => 'required|string|max:255',
+            'foto_usuario' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'tipo_usuario' => 'required|string|in:aluno,funcionario',
             'nome' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:usuarios,email',
+            'email' => 'required|email|unique:usuarios,email',
             'data_nascimento' => 'required|date',
-            'cpf' => 'required|string|unique:usuarios,cpf',
-            'rg' => 'required|string',
-            'telefone' => 'required|string',
-            'cep' => 'required|string',
-            'logradouro' => 'required|string',
+            'cpf' => 'required|cpf|unique:usuarios,cpf',
+            'rg' => 'required|string|max:20',
+            'telefone' => 'required|string|max:15',
+            'cep' => 'required|string|max:10',
+            'logradouro' => 'required|string|max:255',
             'numero' => 'required|integer',
-            'complemento' => 'nullable|string',
-            'password' => 'nullable|string|min:6',
+            'complemento' => 'required|string|max:255',
+            'password' => 'required|string|min:8|confirmed',
 
-            // 'planos_id' => 'required',
-            // 'modalidade_id' => 'required',
-            // 'data_inicio' => 'required|date',
-            // 'data_renovacao' => 'required|date',
-            // 'data_vencimento' => 'required|date',
-            // 'valor_plano' => 'required',
-            // 'desconto' => 'required',
-            // 'parcelas' => 'required',
-            // 'observacoes' => 'required|string',
+            // Validações específicas para `aluno`
+            'planos_id' => 'required_if:tipo_usuario,aluno|integer|exists:planos,id',
+            'packs_id' => 'nullable|integer|exists:packs,id',
+            'data_inicio' => 'required_if:tipo_usuario,aluno|date',
+            'data_renovacao' => 'nullable|date',
+            'data_vencimento' => 'nullable|date',
+            'valor_plano' => 'nullable|numeric',
+            'desconto' => 'nullable|numeric',
+            'parcelas' => 'nullable|integer',
+            'observacoes' => 'required|string|max:500',
+            'modalidade_id' => 'required_if:tipo_usuario,aluno|integer|exists:modalidades,id',
 
-           
-
+            // Validações específicas para `funcionario`
+            'tipo_funcionario' => 'required_if:tipo_usuario,funcionario|string',
+            'cargo' => 'required_if:tipo_usuario,funcionario|string|max:255',
+            'atividades' => 'required_if:tipo_usuario,funcionario|string|max:500',
         ];
     }
 
-    /**
-     * Retorna as mensagens de erro personalizadas para as regras de validação.
-     *
-     * @return array
-     */
     public function messages(): array
     {
         return [
-            'tipo_usuario.required' => 'Campo do tipo do usuario é obrigatorio!',
-            'nome.required' => 'Campo nome é obrigatorio!',
-            'email.required' => 'Esse campo é obrigatorio!',
-            'email.email' => 'Insira um email valido',
-            'data_nascimento.required' => 'Campo data de nascimento é obrigatorio',
-            'data_nascimento.date' => 'Insira uma data valida!',
-            'cpf.required' => 'Campo CPF é obrigatorio',
-            'cpf.unique' => 'CPF já cadastrado!',
-            'rg.required' => 'Campo RG é obrigatorio',
-            'telefone.required' => 'Campo telefone é obrigatorio',
-            'cep.required' => 'Campo CEP é obrigatorio',
-            'logradouro.required' => 'Campo Logradouro é obrigatorio',
-            'numero.required' => 'Campo Numero é obrigatorio',
-            'password.required' => 'Campo Senha é obrigatorio',
-            'password.min' => 'Senha com no mínimo :min caracteres!',
+            // Mensagens gerais
+            'tipo_usuario.required' => 'Campo do tipo do usuário é obrigatório!',
+            'nome.required' => 'Campo nome é obrigatório!',
+            'email.required' => 'O campo email é obrigatório!',
+            'email.email' => 'Insira um email válido!',
+            'data_nascimento.required' => 'Campo data de nascimento é obrigatório!',
+            'data_nascimento.date' => 'Insira uma data válida!',
+            'cpf.required' => 'Campo CPF é obrigatório!',
+            'cpf.unique' => 'Este CPF já está cadastrado!',
+            'rg.required' => 'Campo RG é obrigatório!',
+            'telefone.required' => 'Campo telefone é obrigatório!',
+            'cep.required' => 'Campo CEP é obrigatório!',
+            'logradouro.required' => 'Campo logradouro é obrigatório!',
+            'numero.required' => 'Campo número é obrigatório!',
+            'password.required' => 'Campo senha é obrigatório!',
+            'password.min' => 'Senha deve ter no mínimo :min caracteres!',
+            'observacoes.required' => 'Campo observações é obrigatório!',
 
-            // 'planos_id.required' => "Campo plano é obrigatorio!",
-            // 'modalidade_id.required' => "Campo modalidade é obrigatorio!",
-            // 'data_inicio.required' => "Campo data de inicio é Obrigatorio!",
-            // 'data_renovacao.required' => "Campo data de renovação é obrigatorio!",
-            // 'data_vencimento.required' => "Campo data de vencimento é Obrigatorio!",
-            // 'valor_plano.required' => "Campo valor do plano é obrigatorio",
-            // 'valor_plano.integer' => "Valor invalido!",
-            // 'parcelas.required' => "Campo parcelas é obrigatorio",
-            // 'parcelas.integer' => "Valor invalido",
-            // 'desconto.required' => "Campo desconto é obrigatorio",
-            // 'desconto.integer' => "Valor invalido",
-            // 'observacoes.required' => "Campo observações é obrigatorio",
+            // Mensagens para o tipo `aluno`
+            'planos_id.required_if' => 'Campo plano é obrigatório para alunos!',
+            'packs_id.integer' => 'Valor de packs inválido!',
+            'data_inicio.required_if' => 'Campo data de início é obrigatório para alunos!',
+            'data_renovacao.date' => 'Data de renovação deve ser válida!',
+            'data_vencimento.date' => 'Data de vencimento deve ser válida!',
+            'valor_plano.numeric' => 'O valor do plano deve ser numérico!',
+            'desconto.numeric' => 'O desconto deve ser um número!',
+            'parcelas.integer' => 'Parcelas devem ser um número inteiro!',
+            'modalidade_id.required_if' => 'Campo modalidade é obrigatório para alunos!',
+           
 
-            // 'tipo_funcionario.required' => "Campo tipo do funcionario é obrigatorio",
-            // 'cargo.required' => "Campo cargo é obrigatorio",
-            // 'atividades.required' => "Campo atividades é obrigatorio",
+            // Mensagens para o tipo `funcionario`
+            'tipo_funcionario.required_if' => 'Campo tipo do funcionário é obrigatório para funcionários!',
+            'cargo.required_if' => 'Campo cargo é obrigatório para funcionários!',
+            'atividades.required_if' => 'Campo atividades é obrigatório para funcionários!',
         ];
     }
 }

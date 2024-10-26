@@ -73,7 +73,7 @@ class PlanosController extends Controller
                 'status' => true,
                 'plano' => $plano,
                 'message' => 'Plano cadastrado com Sucesso!'
-            ], 201)->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+            ], 201);
 
         } catch (Exception $e) {
             DB::rollBack(); // Reverte a transação em caso de erro
@@ -84,7 +84,7 @@ class PlanosController extends Controller
         }
     }
 
-    public function update (PlanosUpdateRequest $request, $id): JsonResponse {
+    public function update (PlanosRequest $request, $id): JsonResponse {
         try {
             DB::beginTransaction();
 

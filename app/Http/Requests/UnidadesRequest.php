@@ -20,7 +20,7 @@ class UnidadesRequest extends FormRequest
     {
         throw new HttpResponseException(response()->json([
             'status' => false,
-            'erros' => $validator->errors(),
+            'message' => $validator->errors(),
         ], 422)); // O código de status HTTP 422 significa "Unprocessable Entity" (Entidade Não Processável). Esse código é usado quando o servidor entende a requisição do cliente, mas não pode processá-la devido a erros de validação no lado do servidor.
     }
 
@@ -30,23 +30,32 @@ class UnidadesRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-        return [
-            'imagem_unidade' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'nome_unidade' => 'required|string',
-            'endereco' => 'required|string',
-            'grade' => 'nullable|mimes:pdf|max:10000',
-            'descricao' => 'required|string'
-        ];
+{
+    $rules = [
+        'nome_unidade' => 'required|string',
+        'endereco' => 'required|string',
+        'descricao' => 'required|string',
+    ];
+
+    if ($this->isMethod('post')) {
+        $rules['imagem_unidade'] = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+        $rules['grade'] = 'required|mimes:pdf|max:10000';
+    } else if ($this->isMethod('put')) {
+        $rules['imagem_unidade'] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+        $rules['grade'] = 'nullable|mimes:pdf|max:10000';
     }
+
+    return $rules;
+}
 
     public function messages()
     {
-       return[
-           'nome_unidade.required' => 'Campo nome da unidade é obrigatorio',
-           'endereco.required' => 'Campo endereço é obrigatorio',
-           'descricao.required' => 'Campo descrição é obrigatorio'
-       ];
-
+        return [
+            'imagem_unidade.required' => 'A imagem da unidade é obrigatória',
+            'nome_unidade.required' => 'Campo nome da unidade é obrigatorio',
+            'endereco.required' => 'Campo endereço é obrigatorio',
+            'grade.required' => 'Campo grade é obrigatorio',
+            'descricao.required' => 'Campo descrição é obrigatorio'
+        ];
     }
 }

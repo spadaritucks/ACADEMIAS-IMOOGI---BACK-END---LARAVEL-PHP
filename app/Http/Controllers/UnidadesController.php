@@ -96,7 +96,7 @@ class UnidadesController extends Controller
         
     }
 
-    public function update (UnidadesUpdateRequest $request,$id){
+    public function update (UnidadesRequest $request,$id){
         try{
 
             DB::beginTransaction();

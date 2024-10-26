@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class PlanosRequest extends FormRequest
+class PackRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -39,7 +39,7 @@ class PlanosRequest extends FormRequest
             'valor_total'=> 'required',
             'num_modalidades'=> 'required',
             'status'=> 'required|string',
-            'number_checkins' => 'required|integer'
+            'number_checkins_especial' => 'required|integer'
         ];
     }
 
@@ -52,13 +52,14 @@ class PlanosRequest extends FormRequest
             'valor_total.required' => 'Campo do valor total do plano é obrigatorio',
             'num_modalidades.required' => 'Campo de quantidade de modalidades é obrigatorio',
             'status.required' => 'Campo status é obrigatorio',
-            'number_checkins.required' => 'Campo de Numero de Checkins é obrigatorio',
-            'number_checkins.integer' => 'Valor Invalido'
+            'number_checkins_especial.required' => 'Campo de Numero de Checkins é obrigatorio',
+            'number_checkins_especial.integer' => 'Valor Invalido'
         ];
     }
     
 }
 
     
+
 
 
