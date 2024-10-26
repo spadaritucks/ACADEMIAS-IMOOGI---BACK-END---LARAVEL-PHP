@@ -36,9 +36,9 @@ class ClientUsuariosRequest extends FormRequest
         return [
             'foto_usuario' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'nome' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:usuarios,email',
+            'email' => 'required|string|email|max:255|',
             'data_nascimento' => 'required|date',
-            'cpf' => 'required|string|unique:usuarios,cpf',
+            'cpf' => 'required|string|unique:usuarios|cpf',
             'rg' => 'required|string',
             'telefone' => 'required|string',
             'cep' => 'required|string',

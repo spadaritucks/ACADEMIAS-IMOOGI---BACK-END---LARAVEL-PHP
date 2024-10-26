@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AulasRequest;
 use App\Models\Aulas;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ class AulasController extends Controller
      */
     public function index(Request $request)
     {
+        
         try {
             $dataInicio = $request->query('data_inicio');
             $dataFim = $request->query('data_fim');
@@ -47,7 +49,7 @@ class AulasController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AulasRequest $request)
     {
         try {
             DB::beginTransaction();
