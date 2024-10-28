@@ -44,11 +44,11 @@ class UsuarioRequest extends FormRequest
             'data_inicio' => 'required_if:tipo_usuario,aluno|date',
             'data_renovacao' => 'nullable|date',
             'data_vencimento' => 'nullable|date',
-            'valor_plano' => 'nullable|numeric',
-            'desconto' => 'nullable|numeric',
-            'parcelas' => 'nullable|integer',
+            'valor_plano' => 'nullable',
+            'desconto' => 'nullable',
+            'parcelas' => 'nullable',
             'observacoes' => 'required|string|max:500',
-            'modalidade_id' => 'required_if:tipo_usuario,aluno|integer|exists:modalidades,id',
+            'modalidade_id' => 'required_if:tipo_usuario,aluno|exists:modalidades,id',
 
             // Validações específicas para `funcionario`
             'tipo_funcionario' => 'required_if:tipo_usuario,funcionario|string',
