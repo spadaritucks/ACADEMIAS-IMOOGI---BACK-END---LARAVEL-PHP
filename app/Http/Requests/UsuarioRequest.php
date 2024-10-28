@@ -36,7 +36,7 @@ class UsuarioRequest extends FormRequest
             'logradouro' => 'required|string|max:255',
             'numero' => 'required|integer',
             'complemento' => 'required|string|max:255',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8',
 
             // Validações específicas para `aluno`
             'planos_id' => 'required_if:tipo_usuario,aluno|integer|exists:planos,id',
