@@ -34,7 +34,7 @@ class AulasRequest extends FormRequest
         return [
             'modalidade_id' => 'required|exists:modalidades,id',
             'horario' => 'required|string',
-            'dia_semana' => 'required|array',
+            'dia_semana' => 'required',
             'data_inicio' => 'required|date',
             'data_fim' => 'required|date|after:data_inicio',
             'limite_alunos' => 'required|integer|min:1',
