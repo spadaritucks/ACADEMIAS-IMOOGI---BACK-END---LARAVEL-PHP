@@ -41,7 +41,7 @@ class UsuarioRequest extends FormRequest
             // Validações específicas para `aluno`
             'planos_id' => 'required_if:tipo_usuario,aluno|integer|exists:planos,id',
             'packs_id' => 'nullable|integer|exists:packs,id',
-            'data_inicio' => 'required_if:tipo_usuario,aluno|date',
+            'data_inicio' => 'nullable|date',
             'data_renovacao' => 'nullable|date',
             'data_vencimento' => 'nullable|date',
             'valor_plano' => 'nullable',
