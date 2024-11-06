@@ -143,6 +143,7 @@ class UsuarioController extends Controller
            $request->valor_plano ? $valorPlano = str_replace(',', '.', $request->valor_plano) : null;
            $request->desconto ? $desconto = str_replace(',', '.', $request->desconto): null;
            $request->parcelas ? $parcelas = str_replace(',', '.', $request->parcelas): null;
+           $cpf = preg_replace('/\D/', '', $request->cpf);
 
             $fotoUsuario = null;
             if ($request->hasFile('foto_usuario')) {
@@ -153,6 +154,8 @@ class UsuarioController extends Controller
                 $fotoUsuario = $filePath;
             }
 
+            
+
 
             $usuario = Usuario::create([
                 'foto_usuario' => $fotoUsuario,
@@ -160,7 +163,7 @@ class UsuarioController extends Controller
                 'nome' => $request->nome,
                 'email' => $request->email,
                 'data_nascimento' => $request->data_nascimento,
-                'cpf' => $request->cpf,
+                'cpf' => $cpf,
                 'rg' => $request->rg,
                 'telefone' => $request->telefone,
                 'cep' => $request->cep,

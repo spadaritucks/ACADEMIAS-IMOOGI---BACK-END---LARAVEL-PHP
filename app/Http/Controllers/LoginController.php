@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function login(Request $request){
-        
+        $cpf = preg_replace('/\D/', '', $request->cpf);
 
-        if(Auth::attempt(['cpf' =>$request->cpf, 'password' => $request->password])){
+        if(Auth::attempt(['cpf' =>$cpf, 'password' => $request->password])){
             $user = Auth::user();
 
             $token =  $request->user()->createToken('api-token', [], now()->addHours(1))->plainTextToken;
+            
 
             return response()->json([
 
