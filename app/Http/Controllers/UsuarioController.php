@@ -25,7 +25,7 @@ class UsuarioController extends Controller
     {
         try {
             $user = DB::table('usuarios')->get();
-
+            
             // Buscar todos os contratos com detalhes dos planos
             $contratos = DB::table('contratos')
                 ->join('planos', 'contratos.planos_id', '=', 'planos.id')
@@ -239,6 +239,7 @@ class UsuarioController extends Controller
             $valorPlano = str_replace(',', '.', $request->valor_plano);
             $desconto = str_replace(',', '.', $request->desconto);
             $parcelas = str_replace(',', '.', $request->parcelas);
+            $cpf = preg_replace('/\D/', '', $request->cpf);
 
             $usuario = Usuario::findOrFail($id);
 
@@ -257,7 +258,7 @@ class UsuarioController extends Controller
                 'nome' => $request->nome,
                 'email' => $request->email,
                 'data_nascimento' => $request->data_nascimento,
-                'cpf' => $request->cpf,
+                'cpf' => $cpf,
                 'rg' => $request->rg,
                 'telefone' => $request->telefone,
                 'cep' => $request->cep,

@@ -30,7 +30,7 @@ class UsuarioRequest extends FormRequest
             'email' => 'required|email|',
             'data_nascimento' => 'required|date',
             'cpf' => 'required|unique:usuarios',
-            'rg' => 'required|string|max:20',
+            'rg' => 'required|string|unique:usuarios|max:20',
             'telefone' => 'required|string|max:15',
             'cep' => 'required|string|max:10',
             'logradouro' => 'required|string|max:255',
@@ -47,7 +47,7 @@ class UsuarioRequest extends FormRequest
             'valor_plano' => 'nullable',
             'desconto' => 'nullable',
             'parcelas' => 'nullable',
-            'observacoes' => 'required|string|max:500',
+            'observacoes' => 'required_if:tipo_usuario,aluno|string|max:500',
             'modalidade_id' => 'required_if:tipo_usuario,aluno|exists:modalidades,id',
 
             // Validações específicas para `funcionario`
