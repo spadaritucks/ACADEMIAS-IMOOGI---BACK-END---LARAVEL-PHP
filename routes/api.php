@@ -10,6 +10,7 @@ use App\Http\Controllers\PlanosController;
 use App\Http\Controllers\ReservasController;
 use App\Http\Controllers\UnidadesController;
 use App\Http\Controllers\UserModalidadeEditController;
+use App\Http\Controllers\UserPackEditController;
 use App\Http\Controllers\UserPlanoEditController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Http\Request;
@@ -27,8 +28,9 @@ Route::post('/usuarios', [UsuarioController::class, 'store']);
 Route::put('/usuarios/{id}', [UsuarioController::class, 'update']);
 Route::put('/user_modalidade/{id}',[UserModalidadeEditController::class, 'update']);
 Route::put('/user_plano/{id}', [UserPlanoEditController::class, 'update']);
+Route::put('/user_packs/{id}', [UserPackEditController::class, 'update']);
 Route::put('/usuario_client/{id}', [UsuarioController::class, 'updateClientUser']);
-route::put('/user_password/{id}',[UsuarioController::class, 'resetPassword']);
+Route::put('/user_password/{id}',[UsuarioController::class, 'resetPassword']);
 Route::delete('/usuarios/{id}', [UsuarioController::class, 'destroy']);
 
 

@@ -10,6 +10,7 @@ use App\Models\DadosFuncionario;
 use App\Models\Planos;
 use App\Models\Usuario;
 use App\Models\UsuarioModalidades;
+use App\Models\UsuariosPacks;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -190,6 +191,23 @@ class UsuarioController extends Controller
                     'observacoes' => $request->observacoes
                 ]);
 
+                if($request->packs_id){
+                    if (is_array($request->packs_id)) {
+                        foreach ($request->packs_id as $packsId) {
+                            UsuariosPacks::create([
+                                'usuario_id' => $usuario->id,
+                                'packs_id' => $packsId
+                            ]);
+                        }
+                    } else {
+                        UsuariosPacks::create([
+                            'usuario_id' => $usuario->id,
+                            'packs_id' => $request->modalidade_id
+                        ]);
+                    }
+                    
+                }
+
                 if (is_array($request->modalidade_id)) {
                     foreach ($request->modalidade_id as $modalidadeId) {
                         UsuarioModalidades::create([
@@ -277,8 +295,6 @@ class UsuarioController extends Controller
                 $contrato = Contratos::updateOrCreate(
                     ['usuario_id' => $usuario->id], // Condição para encontrar o registro
                     [ // Dados a serem atualizados ou criados
-                        'planos_id' => $request->planos_id,
-                        'packs_id' => $request->packs_id ?? null,
                         'data_inicio' => $request->data_inicio ?? null,
                         'data_renovacao' => $request->data_renovacao ?? null,
                         'data_vencimento' => $request->data_vencimento ?? null,
@@ -288,6 +304,10 @@ class UsuarioController extends Controller
                         'observacoes' => $request->observacoes
                     ]
                 );
+
+                
+
+
             } elseif ($request->tipo_usuario == 'funcionario') {
                 $dados = DadosFuncionario::updateOrCreate(
                     ['usuario_id' => $usuario->id], // Condição para encontrar o registro
