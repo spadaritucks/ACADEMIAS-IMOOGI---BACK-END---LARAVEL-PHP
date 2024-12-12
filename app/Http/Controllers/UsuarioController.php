@@ -35,7 +35,8 @@ class UsuarioController extends Controller
 
             // Buscar todas as modalidades com detalhes das modalidades
             $modalidades = DB::table('usuarios_modalidades')->get();
-            $packs = DB::table('usuarios_packs')->get();
+            $packs = DB::table('usuarios_packs')->join('packs', 'usuarios_packs.packs_id', '=', 'packs.id')
+            ->select('usuarios_packs.*', 'packs.nome_plano')->get();
 
             // Buscar nomes das modalidades
             $modalidadeNomes = DB::table('modalidades')->pluck('nome_modalidade', 'id');
