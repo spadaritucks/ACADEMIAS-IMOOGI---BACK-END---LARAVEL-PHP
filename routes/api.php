@@ -79,6 +79,7 @@ Route::delete('/reservas/{id}', [ReservasController::class, 'destroy']);
 
 //Rotas de Checkins
 Route::get('/checkins', [ReservasController::class, 'getCheckins']);
+Route::get('/especial_checkins', [ReservasController::class, 'getEspecialCheckins']);
 
 //Rotas de Gerenciamento de Aulas
 

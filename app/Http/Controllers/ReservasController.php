@@ -8,6 +8,7 @@ use App\Models\Especial_checkins;
 use App\Models\Packs;
 use App\Models\Planos;
 use App\Models\Reservas;
+use App\Models\UsuariosPacks;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -47,6 +48,7 @@ class ReservasController extends Controller
         try {
             $usuarioId = $request->usuario_id;
             $contrato = Contratos::where('usuario_id', $usuarioId)->first();
+            $usuarioPacks = UsuariosPacks::where('usuario_id', $usuarioId)->first();
             $planosId = $contrato->planos_id;
             $plano = Planos::where('id', $planosId )->first();
             $checkins_planos = $plano->number_checkins;
@@ -63,8 +65,9 @@ class ReservasController extends Controller
 
             if ($checkinsNaSemana >=  $checkins_planos) {
 
-                if ($contrato->packs_id != null) {
-                    $pack = Packs::findOrFail($contrato->packs_id);
+                if ($usuarioPacks->packs_id != null) {
+                    $pack = Packs::findOrFail($usuarioPacks->packs_id);
+                  
                     
                     $number_especial_checkins = $pack->number_checkins_especial;
                     
@@ -144,6 +147,27 @@ class ReservasController extends Controller
                 'message' => 'Falha em realizar a reserva ' . $e->getMessage()
 
             ], 400);
+        }
+    }
+
+    public function getEspecialCheckins() {
+        try{
+
+            $especial_checkins = Especial_checkins::all();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Checkins coletados!',
+                'checkins' => $especial_checkins
+              ], 200);
+
+        }catch(Exception $e){
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Falha ao coletar os checkins!' .$e
+              ], 500);
+
         }
     }
 
