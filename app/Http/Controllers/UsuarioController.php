@@ -184,7 +184,6 @@ class UsuarioController extends Controller
                 $contrato = Contratos::create([
                     'usuario_id' => $usuario->id,
                     'planos_id' => $request->planos_id,
-                    'packs_id' => $request->packs_id ?? null,
                     'data_inicio' => $request->data_inicio ?? null,
                     'data_renovacao' => $request->data_renovacao ?? null,
                     'data_vencimento' => $request->data_vencimento ?? null,
