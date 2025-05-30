@@ -13,7 +13,7 @@ Route::get('/', function () {
 
 
 Route::get('/storage/upload/{filename}', function ($filename) {
-    $path = storage_path('app/public/upload/' . $filename);
+    $path = storage_path('app/public/uploads/' . $filename);
 
     if (!File::exists($path)) {
         abort(404);
