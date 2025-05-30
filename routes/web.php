@@ -12,8 +12,16 @@ Route::get('/', function () {
 });
 
 
-Route::get('/storage', function () {
-   return Artisan::call('storage:link');
-});
+Route::get('/storage/upload/{filename}', function ($filename) {
+    $path = storage_path('app/public/upload/' . $filename);
 
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    return response($file, 200)->header("Content-Type", $type);
+});
 
