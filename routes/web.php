@@ -13,7 +13,7 @@ Route::get('/', function () {
 
 
 Route::get('/storage/{filename}', function ($filename) {
-    $path = storage_path('app/public/uploads/' . $filename);
+    $path = storage_path('app/public' . $filename);
 
     if (!File::exists($path)) {
         abort(404);
@@ -24,5 +24,5 @@ Route::get('/storage/{filename}', function ($filename) {
     $type = File::mimeType($path);
 
     return response($file, 200)->header("Content-Type", $type);
-});
+})->where('filepath', '.*'); // aceita barras e subpastas no nome do arquivo
 
