@@ -95,18 +95,7 @@ Route::get('/pagamentos_mensais', [PagamentosMensaisController::class, 'index'])
 Route::post('/pagamentos_mensais', [PagamentosMensaisController::class, 'store']);
 Route::put('/pagamentos_mensais/{id}', [PagamentosMensaisController::class, 'adicionarComentarioAdmin']);
 
-Route::get('storage/{filename}', function ($filename) {
-    $path = storage_path('app/public/' . $filename);
 
-    if (!File::exists($path)) {
-        abort(404);
-    }
-
-    $file = File::get($path);
-    $type = File::mimeType($path);
-
-    return response($file, 200)->header("Content-Type", $type);
-});
 
 
 
